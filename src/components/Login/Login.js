@@ -1,7 +1,24 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
+
 
 const Login = () => {
+
+    const {signInGoogle} = useAuth();
+    const history = useHistory();
+    const location = useLocation();
+    const redirect_uri = location.state?.from || '/shop'
+    
+
+    const handleGoogleLogin = () =>{
+        signInGoogle()
+        .then(result =>{
+            history.push(redirect_uri)
+
+        })
+    }
+
     return (
         <div className=" d-flex justify-content-center ">
             <div className="   ">
@@ -15,7 +32,7 @@ const Login = () => {
                 </form>
                 <p>New to Ema-john <Link to="/register">Create Account</Link></p>
                 <div>------------Or-------------</div>
-                <button className="btn btn-warning">Google Sign in</button>
+                <button className="btn btn-warning" onClick={handleGoogleLogin}>Google Sign in</button>
             </div>
         </div>
     );
